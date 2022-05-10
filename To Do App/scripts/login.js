@@ -31,8 +31,6 @@ window.addEventListener('load', function () {
 
        // reseteamos el form
         form.reset()
-
-
     });
 
 

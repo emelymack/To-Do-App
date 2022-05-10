@@ -16,14 +16,27 @@ window.addEventListener('load', function () {
         event.preventDefault() // detenemos el form para que no se envíe 
 
         //creamos el body de la request a la api (objeto)
+        let body = {
+            firstName: nombre.value,
+            lastName: apellido.value,
+            email: email.value,
+            password: password.value
+        }
 
         // configuramos la request del Fetch
-        const settings = '';
+        const settings = {
+            method: "POST",
+            body: JSON.stringify(body),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
 
         // enviamos los datos
         realizarRegister(settings)
 
         // Reiniciamos el formulario
+        form.reset()
     });
 
     /* -------------------------------------------------------------------------- */
@@ -32,9 +45,32 @@ window.addEventListener('load', function () {
     function realizarRegister(settings) {
         
         // hacemos el fetch a la api, con el path correspondiente según la config de la API, indicando como 2do parametro los datos a enviar
-        // fetch(`${url}/users`, settings)
-        
+        fetch(`${url}/users`, settings)
+        .then( response =>{
+            console.log(response);
 
+            if(response.ok !== true){
+                alert('Alguno de los datos es incorrecto. Vuelva a intentarlo')
+            }
+
+            return response.json()
+        }) 
+        .then( data => {
+            console.log(data);
+
+            if(data.jwt){
+                // guardo en LocalStorage 
+                localStorage.setItem('jwt', JSON.stringify(data.jwt))
+
+                // redireccionamos a las tareas
+                location.replace('./index.html')
+            }
+            
+        })
+        .catch( err => {
+            console.log("ERROR: "+ err);
+        })
+    
 
     };
 
