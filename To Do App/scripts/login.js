@@ -12,7 +12,7 @@ window.addEventListener('load', function () {
        event.preventDefault()
 
        // creamos el cuerpo de la request
-        let bodyReq = JSON.stringify({
+        let body = JSON.stringify({
             "email": email.value,
             "password": password.value
         })
@@ -20,7 +20,7 @@ window.addEventListener('load', function () {
        // configuramos la request del Fetch
        const settings = {
         method: "POST",
-        body: bodyReq,
+        body: body,
         headers: {
             "Content-type": "application/json"
         }
@@ -41,12 +41,24 @@ window.addEventListener('load', function () {
        
         // fetch , enviando los settings como 2do param
         fetch(`${url}/users/login`, settings)
-        .then( response => response.json() )
+        .then( response => {
+            console.log(response);
+
+            if(response.ok !== true){
+                alert('Alguno de los datos es incorrecto. Vuelva a intentarlo')
+            }
+
+            return response.json() 
+        })
         .then( data => {
             console.log("Realizando login...");
             console.log(data);
             if(data.jwt){
-                
+                // guardo en Local Storage
+                localStorage.setItem('jwt', JSON.stringify(data));
+
+                // redireccionamos a las tareas
+                location.replace('./mis-tareas.html')
             }
         } )
         

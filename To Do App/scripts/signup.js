@@ -56,13 +56,14 @@ window.addEventListener('load', function () {
             return response.json()
         }) 
         .then( data => {
+            console.log('Realizando registro...');
             console.log(data);
 
             if(data.jwt){
                 // guardo en LocalStorage 
                 localStorage.setItem('jwt', JSON.stringify(data.jwt))
 
-                // redireccionamos a las tareas
+                // redireccionamos al login
                 location.replace('./index.html')
             }
             
