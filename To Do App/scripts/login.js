@@ -55,7 +55,7 @@ window.addEventListener('load', function () {
             console.log(data);
             if(data.jwt){
                 // guardo en Local Storage
-                localStorage.setItem('jwt', JSON.stringify(data));
+                localStorage.setItem('jwt', JSON.stringify(data.jwt));
 
                 // redireccionamos a las tareas
                 location.replace('./mis-tareas.html')
