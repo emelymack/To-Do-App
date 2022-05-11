@@ -10,13 +10,14 @@ window.addEventListener('load', function () {
 
   /* ---------------- variables globales y llamado a funciones ---------------- */
   const url = 'https://ctd-todo-api.herokuapp.com/v1'
+  let jwt = JSON.parse(localStorage.jwt)
   const btnCerrarSesion = document.querySelector('#closeApp')
-  const username = document.querySelector('.user-info p')
-  const inputTarea = document.querySelector('#nuevaTarea')
+  const formCrearTarea = document.querySelector('.nueva-tarea')
+  const nuevaTarea = document.querySelector('#nuevaTarea')
   const pendientes = document.querySelector('.tareas-pendientes')
   const cantFinalizadas = document.querySelector('#cantidad-finalizadas')
   const finalizadas = document.querySelector('.tareas-terminadas')
-  let jwt = JSON.parse(localStorage.jwt)
+  
 
   obtenerNombreUsuario()
   consultarTareas()
@@ -43,6 +44,8 @@ window.addEventListener('load', function () {
   /* -------------------------------------------------------------------------- */
 
   function obtenerNombreUsuario() {
+    const username = document.querySelector('.user-info p')
+    
     // preparamos los settings del request
     let settings = {
       method: 'GET',
@@ -102,13 +105,38 @@ window.addEventListener('load', function () {
   /*                    FUNCIÓN 4 - Crear nueva tarea [POST]                    */
   /* -------------------------------------------------------------------------- */
 
-  //formCrearTarea.addEventListener('submit', function (event) {
-    
+  formCrearTarea.addEventListener('submit', function (event) {
+    event.preventDefault();
 
+    console.log('Creando nueva tarea...');
+    console.log(nuevaTarea.value);
 
+    // preparamos el body del request
+    let body = {
+      description: nuevaTarea.value.trim(),
+      completed: false
+    }
 
+    // preparamos los settings del request
+    let settings = {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: {
+        'authorization': jwt,
+        'Content-type': 'application/json'
+      }
+    }
 
-  //});
+    // hacemos el fetch
+    fetch(`${url}/tasks`, settings)
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(err => console.log(err))
+
+    // reseteamos el form
+    formCrearTarea.reset()
+
+  });
 
 
   /* -------------------------------------------------------------------------- */
