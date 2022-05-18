@@ -14,9 +14,7 @@ window.addEventListener('load', function () {
   const btnCerrarSesion = document.querySelector('#closeApp')
   const formCrearTarea = document.querySelector('.nueva-tarea')
   const nuevaTarea = document.querySelector('#nuevaTarea')
-  const pendientes = document.querySelector('.tareas-pendientes')
-  const cantFinalizadas = document.querySelector('#cantidad-finalizadas')
-  const finalizadas = document.querySelector('.tareas-terminadas')
+  
   
 
   obtenerNombreUsuario()
@@ -27,6 +25,7 @@ window.addEventListener('load', function () {
   /* -------------------------------------------------------------------------- */
 
   btnCerrarSesion.addEventListener('click', function () {
+    // ANIMAR ALERT
     const cerrarSesion = confirm('¿Desea cerrar sesión?')
     
     if(cerrarSesion){
@@ -60,8 +59,8 @@ window.addEventListener('load', function () {
     .then(response => response.json())
     .then(data => {
       //console.log(data)
-      let firstName = data.firstName[0].toUpperCase() + data.firstName.slice(1)
-      let lastName = data.lastName[0].toUpperCase() + data.lastName.slice(1)
+      let firstName = data.firstName.charAt(0).toUpperCase() + data.firstName.slice(1)
+      let lastName = data.lastName.charAt(0).toUpperCase() + data.lastName.slice(1)
       
       // insertamos el nombre en el elemento HTML
       username.innerHTML = `<span>${firstName} ${lastName}</span>`
@@ -85,7 +84,6 @@ window.addEventListener('load', function () {
     }
     
     console.log('Consultando tareas...');
-
     fetch(`${url}/tasks`, settings)
     .then(response => response.json())
     .then(tareas => {
@@ -96,7 +94,7 @@ window.addEventListener('load', function () {
       //botonesCambioEstado()
       //botonBorrarTarea()
     })
-    .catch(err => console.log(err))
+    .catch(err => console.error(err))
 
   };
 
@@ -106,7 +104,7 @@ window.addEventListener('load', function () {
   /* -------------------------------------------------------------------------- */
 
   formCrearTarea.addEventListener('submit', function (event) {
-    event.preventDefault();
+    event.preventDefault(); // prevenimos el envío x defecto para poder trabajar con el value
 
     console.log('Creando nueva tarea...');
     console.log(nuevaTarea.value);
@@ -130,12 +128,18 @@ window.addEventListener('load', function () {
     // hacemos el fetch
     fetch(`${url}/tasks`, settings)
     .then(response => response.json())
-    .then(data => console.log(data))
+    .then(tarea => {
+      console.log(tarea)
+      consultarTareas()
+    })
     .catch(err => console.log(err))
+
+     
+    //  o como se imprime
 
     // reseteamos el form
     formCrearTarea.reset()
-
+    consultarTareas()
   });
 
 
@@ -144,12 +148,56 @@ window.addEventListener('load', function () {
   /* -------------------------------------------------------------------------- */
   function renderizarTareas(listado) {
 
+    // obtenemos listados y limpiamos cualquier contenido interno
+    const pendientes = document.querySelector('.tareas-pendientes')
+    const finalizadas = document.querySelector('.tareas-terminadas')
+    pendientes.innerHTML = ""
+    finalizadas.innerHTML = ""
 
 
+    // buscamos el numero de finalizadas y lo inicializamos en 0
+    const cantFinalizadas = document.querySelector('#cantidad-finalizadas')
+    let contador = 0
+    cantFinalizadas.innerText = contador
 
 
+    // verificamos si cada tarea queda pendiente o no y la enviamos a la lista correspondiente
+    listado.forEach(tarea => {
+      // variable para manipular la fecha
+      let fecha = new Date(tarea.createdAt)
 
+      if(tarea.completed){
+        contador++
+        finalizadas.innerHTML += `
+          <li class="tarea">
+            <div class="hecha">
+              <i class="fa-regular fa-circle-check"></i>
+            </div>
+            <div class="descripcion">
+              <p class="nombre">${tarea.description}</p>
+              <div class="cambios-estados">
+                <button class="change incompleta" id="${tarea.id}"><i class="fa-solid fa-rotate-left"></i></button>
+                <button class="borrar" id="${tarea.id}"><i class="fa-regular fa-trash-can"></i></button>
+            </div>
+          </li>
+        `
+      } else {
+        pendientes.innerHTML += `
+        <li class="tarea">   
+          <button class="change" id="${tarea.id}"><i class="fa-regular fa-circle"></i></button>
+          <div class="descripcion">
+              <p class="nombre">${tarea.description}</p>
+              <p class="timestamp">${fecha.toLocaleDateString()}</p>
+          </div>
+        </li>
+        `
 
+      }
+
+      // actualizamos el contador en la pantalla
+      cantFinalizadas.innerText = contador;
+    });
+    
   };
 
   /* -------------------------------------------------------------------------- */
