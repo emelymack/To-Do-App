@@ -1,6 +1,5 @@
 // SEGURIDAD: Si no se encuentra en localStorage info del usuario
 // no lo deja acceder a la página, redirigiendo al login inmediatamente.
-
 if(!localStorage.jwt){
   location.replace('./index.html')
 }
@@ -91,7 +90,7 @@ window.addEventListener('load', function () {
       console.table(tareas);
 
       renderizarTareas(tareas)
-      //botonesCambioEstado()
+      botonesCambioEstado()
       //botonBorrarTarea()
     })
     .catch(err => console.error(err))
@@ -139,7 +138,7 @@ window.addEventListener('load', function () {
 
     // reseteamos el form
     formCrearTarea.reset()
-    consultarTareas()
+    //consultarTareas()
   });
 
 
@@ -176,7 +175,7 @@ window.addEventListener('load', function () {
             <div class="descripcion">
               <p class="nombre">${tarea.description}</p>
               <div class="cambios-estados">
-                <button class="change incompleta" id="${tarea.id}"><i class="fa-solid fa-rotate-left"></i></button>
+                <button class="change completa" id="${tarea.id}"><i class="fa-solid fa-rotate-left"></i></button>
                 <button class="borrar" id="${tarea.id}"><i class="fa-regular fa-trash-can"></i></button>
             </div>
           </li>
@@ -205,9 +204,38 @@ window.addEventListener('load', function () {
   /* -------------------------------------------------------------------------- */
   function botonesCambioEstado() {
     
+    let btnCambioEstado = document.querySelectorAll('.change')
     
+    btnCambioEstado.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        
+        let idTarea = e.target.id;
 
+        // si contiene la clase 'completa' (i.e. si está en la lista "Terminadas") y se hace click en el boton, se manda a las pendientes (i.e. su estado "completed" pasa a ser false), sino, cuando se clickea en el boton la tarea pasa a estar completa.
+        let nuevoEstado = e.target.classList.contains('completa') ? false : true;
 
+        const bodyReq = {
+          completed: nuevoEstado
+        }
+        const settings = {
+          method: "PUT",
+          body: JSON.stringify(bodyReq),
+          headers: {
+            authorization: jwt,
+            'Content-type': "application/json"
+          }
+        }
+
+        fetch(`${url}/tasks/${idTarea}`, settings)
+        .then(response => response.json())
+        .then(tarea => {
+          console.log(tarea)
+          consultarTareas()
+        })
+        .catch(err => console.error(err))
+        
+      })
+    })
 
   }
 
