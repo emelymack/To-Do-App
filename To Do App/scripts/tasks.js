@@ -137,7 +137,7 @@ window.addEventListener('load', function () {
 
     // reseteamos el form
     formCrearTarea.reset()
-    //consultarTareas()
+
   });
 
 
@@ -210,7 +210,7 @@ window.addEventListener('load', function () {
       btn.addEventListener('click', (e) => {
 
         let idTarea = e.target.id;
-        console.log("Cambiando tarea ${idTarea} de estado...");
+        console.log(`Cambiando tarea ${idTarea} de estado...`);
 
         // si contiene la clase 'completa' (i.e. si está en la lista "Terminadas") y se hace click en el boton, se manda a las pendientes (i.e. su estado "completed" pasa a ser false), sino, cuando se clickea en el boton la tarea pasa a estar completa.
         let nuevoEstado = e.target.classList.contains('completa') ? false : true;
@@ -266,13 +266,13 @@ window.addEventListener('load', function () {
         .then(response => response.json())
         .then(tarea => {
           console.log(tarea);
+          consultarTareas()
         })
         .catch(err => console.error(err))
-
-      })
+        
+      }) 
     })
-    
-    consultarTareas()
+  
   };
 
 });
