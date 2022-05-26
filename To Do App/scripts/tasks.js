@@ -14,7 +14,6 @@ window.addEventListener('load', function () {
   const formCrearTarea = document.querySelector('.nueva-tarea')
   const nuevaTarea = document.querySelector('#nuevaTarea')
   
-  
 
   obtenerNombreUsuario()
   consultarTareas()
@@ -91,7 +90,7 @@ window.addEventListener('load', function () {
 
       renderizarTareas(tareas)
       botonesCambioEstado()
-      //botonBorrarTarea()
+      botonBorrarTarea()
     })
     .catch(err => console.error(err))
 
@@ -146,6 +145,7 @@ window.addEventListener('load', function () {
   /*                  FUNCIÓN 5 - Renderizar tareas en pantalla                 */
   /* -------------------------------------------------------------------------- */
   function renderizarTareas(listado) {
+    console.log("Renderizando...");
 
     // obtenemos listados y limpiamos cualquier contenido interno
     const pendientes = document.querySelector('.tareas-pendientes')
@@ -208,8 +208,9 @@ window.addEventListener('load', function () {
     
     btnCambioEstado.forEach(btn => {
       btn.addEventListener('click', (e) => {
-        
+
         let idTarea = e.target.id;
+        console.log("Cambiando tarea ${idTarea} de estado...");
 
         // si contiene la clase 'completa' (i.e. si está en la lista "Terminadas") y se hace click en el boton, se manda a las pendientes (i.e. su estado "completed" pasa a ser false), sino, cuando se clickea en el boton la tarea pasa a estar completa.
         let nuevoEstado = e.target.classList.contains('completa') ? false : true;
@@ -244,11 +245,34 @@ window.addEventListener('load', function () {
   /*                     FUNCIÓN 7 - Eliminar tarea [DELETE]                    */
   /* -------------------------------------------------------------------------- */
   function botonBorrarTarea() {
-   
-    
 
+    let btnDelete = document.querySelectorAll('.borrar')
     
+    btnDelete.forEach( btn => {
+      btn.addEventListener('click', (e) => {
 
+        let idTarea = e.target.id;
+        console.log(`Eliminando tarea "${idTarea}"...`);
+
+        const settings = {
+          method: "DELETE",
+          headers: {
+            authorization: jwt,
+            'Content-type': "application/json"
+          }
+        }
+
+        fetch(`${url}/tasks/${idTarea}`, settings)
+        .then(response => response.json())
+        .then(tarea => {
+          console.log(tarea);
+        })
+        .catch(err => console.error(err))
+
+      })
+    })
+    
+    consultarTareas()
   };
 
 });
