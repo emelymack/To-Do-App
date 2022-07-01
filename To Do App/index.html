@@ -12,6 +12,7 @@
 
   <!-- ---------------- estilos compartidos de login y signup ---------------- -->
   <link rel="stylesheet" href="./css/loginSignupStyles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
   <!-- ---------------------- logica aplicada en login ----------------------- -->
   <script src="./scripts/utils.js"></script>
@@ -21,24 +22,24 @@
 
 <body>
 
-  <header class="container">
-    <nav>
-      <h1>To-Do App</h1>
+  <header class="containerIndex">
+    <nav class="navIndex">
+      <h1>To-Do App | <span>Frontend II</span></h1></h1>
       <img src="./assets/DigitalHouse_Logo_White.png" alt="logo DH">
     </nav>
   </header>
 
   <div class="container">
-    <form>
+    <form name="indexForm" class="indexForm">
       <div class="form-header">
         <h2>To-Do App</h2>
         <p class="rounded">Login</p>
       </div>
 
-      <label>Email</label>
-      <input id="inputEmail" type="text">
-      <label>Contraseña</label>
-      <input id="inputPassword" type="password">
+      <label class="form-label">Email</label>
+      <input id="inputEmail" type="text" name="inputEmail" class="form-control" required>
+      <label class="form-label">Contraseña</label>
+      <input id="inputPassword" type="password" name="inputPassword" class="form-control" required>
 
       <button type="submit">Ingresar</button>
 

@@ -5,15 +5,19 @@ window.addEventListener('load', function () {
     const apellido = document.querySelector('#inputApellido');
     const email = document.querySelector('#inputEmail');
     const password = document.querySelector('#inputPassword');
-    const url = 'https://ctd-todo-api.herokuapp.com/v1'
+    const passwordRepetida = signUpForm["inputPasswordRepetida"];
+    const url = 'https://ctd-todo-api.herokuapp.com/v1';
+    let errList = document.querySelector('.errList');
 
 
 
     /* -------------------------------------------------------------------------- */
     /*            FUNCIÓN 1: Escuchamos el submit y preparamos el envío           */
     /* -------------------------------------------------------------------------- */
+    
     form.addEventListener('submit', function (event) {
         event.preventDefault() // detenemos el form para que no se envíe 
+        errList.innerHTML = "";
 
         //creamos el body de la request a la api (objeto)
         let body = {
@@ -33,10 +37,16 @@ window.addEventListener('load', function () {
         };
 
         // enviamos los datos
-        realizarRegister(settings)
+        if(validarForm){
+            realizarRegister(settings);
+        } else{
+            errList.hidden = false;
+            alert("No se pudo validar el form");
+        }
 
         // Reiniciamos el formulario
-        form.reset()
+        form.reset();
+
     });
 
     /* -------------------------------------------------------------------------- */
@@ -75,5 +85,31 @@ window.addEventListener('load', function () {
 
     };
 
+    function validarForm(){
+        let count = 0;
+        if(!validarNombreCompleto(nombre.value, apellido.value)){
+            errList.innerHTML += "<li class=\"formErr\">Nombre y apellido deben tener más de 2 caracteres y NO deben contener números ni caracteres especiales.</li>"; 
+            count+=1;
+        }; 
+        console.log(normalizarNombre(nombre.value, apellido.value));
 
+        if(!validarEmail(email.value)){
+            errList.innerHTML += "<li class=\"formErr\">El email ingresado no es válido.</li>"
+            count+=1;
+        }
+        normalizarEmail(email.value);
+        if(!validarPassword(password.value)){
+            errList.innerHTML += "<li class=\"formErr\">La contraseña debe contener 2 números como mínimo, sin espacios.</li>"
+            count+=1;
+        };
+        if(!compararPasswords(password.value, passwordRepetida.value)){
+            errList.innerHTML += "<li class=\"formErr\">Las 2 contraseñas deben ser iguales.</li>"
+            count+=1;
+        };
+        console.log(count);
+        if(count > 0){
+            return false;
+        }
+    }
+    return true;
 });

@@ -10,13 +10,13 @@ body {
 
 }
 
-header {
+header.containerSignUp, .containerIndex {
     background-color: var(--negro);
     height: 5rem;
     margin-bottom: 3rem;
 }
 
-nav {
+.navSignUp, .navIndex {
     padding: 1rem;
     height: 100%;
     display: flex;
@@ -24,9 +24,13 @@ nav {
     align-items: center;
 }
 
+.navSignUp h1, .navIndex h1 {
+    font-size: 1.5em;
+}
+
 nav h1 span {
     font-weight: 300;
-    font-size: 1rem;
+    font-size: 1rem !important;
     color: var(--lila);
 }
 nav img {
@@ -34,7 +38,7 @@ nav img {
     height: 80%;
 }
 
-.container {
+.containerSignUp, .containerIndex {
     padding: 0 5%;
 }
 
@@ -46,6 +50,7 @@ form {
     border-radius: 1rem;
     display: flex;
     flex-direction: column;
+    align-self: center;
 }
 
 
@@ -58,11 +63,13 @@ form {
 
 .form-header h2 {
     margin-bottom: .8rem;
+    font-size: 1.5em;
 }
 
 .form-header p {
     background-color: var(--lila);
     padding: .2rem 1rem;
+    border-radius: 100vh !important;
 }
 
 form label {
@@ -70,10 +77,10 @@ form label {
 }
 
 form input {
-    border-radius: 100vh;
+    border-radius: 100vh !important;
     margin-bottom: 1rem;
     padding: .3rem 1rem;
-    border: 2px solid var(--app-grey);
+    border: 2px solid var(--app-grey) !important;
 }
 
 form input:focus {
@@ -85,12 +92,23 @@ form button{
     background-color: var(--azul);
     color: white;
     padding: .8rem 0;
-    border-radius: .3rem;
+    border-radius: .3rem !important;
     font-size: 1rem;
     font-weight: 400;
+    margin-top: 0.5rem;
 }
 form button:hover{
     background-color: var(--azul-hover);
+}
+
+form .errList{
+    border: 1px solid red;
+    margin: 1em;
+}
+
+form .formErr{
+    font-size: 0.8em;
+    color:rgb(212, 0, 0);
 }
 
 .ingresarA {

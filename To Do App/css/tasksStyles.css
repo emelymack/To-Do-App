@@ -1,6 +1,5 @@
 @import url('./globalStyles.css');
 
-
 body {
     background-color: var(--oscuro);
     background-image: url('../assets/wallpaper3.jpg');
@@ -10,6 +9,10 @@ body {
     /* capa sobre fondo */
     box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, .8);
 
+}
+
+main {
+    min-height: calc(100vh - 4rem);
 }
 
 header {
@@ -224,7 +227,7 @@ footer {
     height: 2rem;
     width: 100%;
     background-color: var(--negro);
-    position: fixed;
+    position: sticky;
     bottom: 0;
     display: flex;
     justify-content: center;

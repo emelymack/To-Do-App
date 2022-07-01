@@ -1,53 +1,91 @@
-    const nombre = document.querySelector('#inputNombre');
-    const apellido = document.querySelector('#inputApellido');
-    const email = document.querySelector('#inputEmail');
-    const password = document.querySelector('#inputPassword');
-
 /* ---------------------------------- texto --------------------------------- */
-// function validarTexto(texto) {
-//     let errores = [];
-
-//     let regexTexto = /[A-Za-z]/
-
-//     if(nombre.value == "" && apellido.value == ""){
-//         errores.push("El nombre y el apellido no deben estar vacíos");
-//     } else if(!regexTexto.test(nombre.value) && !regexTexto.test(apellido.value)){
-//         errores.push("El nombre y el apellido no deben contener números ni caracteres especiales")
-//     }
-// }
-
-// function normalizarTexto(texto) {
-    
-//     let texto = {
-//         nombreCompleto: `${nombre.value[0].toUpperCase()} ${nombre.value.slice(1).toLowerCase()} ${apellido.value}`
-//     }
-    
-// }
-
-// /* ---------------------------------- email --------------------------------- */
-// function validarEmail(email) {
-//     const errores = []
-//     const emailRegex = /^[A-Z0-9ü][a-z0-9ü_\d$@$!%*?&]{10,15}$/
-//     if(email.value === ''){
-//         errores.push('El email no debe estar vacío')
-//     } else if(!emailRegex.test(email.value)){
-//         errores.push('El email no es válido. Intente de nuevo')
-//     }
-// }
-
-// function normalizarEmail(email) {
-//     let userEmail = {
-//         email: email.value.trim()
-//     }
-//     return userEmail
-// }
-
-/* -------------------------------- password -------------------------------- */
-function validarContrasenia(contrasenia) {
-    
+function validarNombreCompleto(nombre, apellido) {
+    return validarNombre(nombre) && validarApellido(apellido) ? true : false;
+}
+function validarNombre(nombre){
+    let regexTexto = /[A-Za-z]/
+    if(!regexTexto.test(nombre) || nombre.length <= 2){
+        console.log("err nombre o num regex");
+        return false;
+    } 
+    return true;
+}
+function validarApellido(apellido){
+    let regexTexto = /[A-Za-z]/
+    if(!regexTexto.test(apellido) || apellido.length <= 2){
+        console.log("err apelido o num regex");
+        return false;
+    }
+    return true;
 }
 
-function compararContrasenias(contrasenia_1, contrasenia_2) {
+function normalizarNombre(nombre, apellido) {
+    let nombreCompleto = {
+        nombre: `${nombre[0].toUpperCase()}${nombre.slice(1).toLowerCase()}`.trim(),
+        apellido: `${apellido[0].toUpperCase()}${apellido.slice(1).toLowerCase()}`.trim()
+    }
+    nombre = nombreCompleto.nombre;
+    apellido = nombreCompleto.apellido; 
+    return nombreCompleto.nombre + ' ' +nombreCompleto.apellido;
+}
+
+// /* ---------------------------------- email --------------------------------- */
+function validarEmail(email) {
+    const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    if(!emailRegex.test(email)){
+        return false;
+    }
+    return true;
+}
+
+function normalizarEmail(email) {
+    let userEmail = {
+        email: email.trim()
+    }
+    return userEmail
+}
+
+/* -------------------------------- password -------------------------------- */
+function validarPassword(password) {
+    return validarEspacios(password) && validarNumeros(password) ? true : false;
+}
+
+function compararPasswords(pass_1, pass_2) {
+    return pass_1 === (pass_2) ? true : false;
+}
+
+/* --------------------------------------------------------------------------- */
+function validarEspacios(str){
+    let espacios = false;
+    let i = 0;
+    while (!espacios && (i < str.length)) {
+        if (str.charAt(i) == " "){
+            espacios = true;
+        }
+        i++;
+    }
+        
+    if(espacios) {
+        console.log("No puede contener espacios en blanco");
+        return false;
+    }
+    return true;
+}
+
+
+function validarNumeros(str){
+    let nums = ['0','1','2','3','4','5','6','7','8','9'];
+    let numsInStr = 0;
+    let i = 0;
+    for(let i = 0; i < str.length; i++){
+        nums.forEach(num => {
+            if(str.charAt(i).includes(num)){
+                numsInStr += 1;
+                console.log("nums en str:" +numsInStr);
+            }
+        })
+    }
     
+    return numsInStr >= 2;
 }
 
