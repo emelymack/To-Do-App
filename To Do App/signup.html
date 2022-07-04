@@ -13,10 +13,14 @@
   <!-- ---------------- estilos compartidos de login y signup ---------------- -->
   <link rel="stylesheet" href="./css/loginSignupStyles.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
   <!-- ---------------------- logica aplicada en register -------------------- -->
   <script src="./scripts/utils.js"></script>
   <script src="./scripts/signup.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
   <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>-->
 
 </head>
@@ -29,8 +33,8 @@
     </nav>
   </header>
 
-  <div class="container">
-    <form name="signUpForm" class="signUpForm">
+  <div class="container" data-aos="zoom-in">
+    <form name="signUpForm" class="signUpForm" >
       <div class="form-header">
         <h2>To-Do App</h2>
         <p class="rounded">Register</p>
@@ -53,7 +57,10 @@
 
       <button type="submit">Crear Cuenta</button>
 
-      <ul class="errList" hidden></ul>
+      <div class="errContainer" hidden>
+        <ul class="errList"></ul>
+      </div>
+      
     </form>
 
     <div class="ingresarA">

@@ -18,13 +18,28 @@ window.addEventListener('load', function () {
   obtenerNombreUsuario()
   consultarTareas()
 
+  
   /* -------------------------------------------------------------------------- */
   /*                          FUNCIÓN 1 - Cerrar sesión                         */
   /* -------------------------------------------------------------------------- */
 
   btnCerrarSesion.addEventListener('click', function () {
-    // ANIMAR ALERT
-    const cerrarSesion = confirm('¿Desea cerrar sesión?')
+    Swal.fire({
+      title: 'Do you want to save the changes?',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      denyButtonText: `Don't save`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire('Saved!', '', 'success')
+      } else if (result.isDenied) {
+        Swal.fire('Changes are not saved', '', 'info')
+      }
+    })
+    const cerrarSesion = cerrarSesion();
+    
+    //confirm('¿Desea cerrar sesión?')
     
     if(cerrarSesion){
       // limpiamos el local Storage
@@ -131,9 +146,6 @@ window.addEventListener('load', function () {
       consultarTareas()
     })
     .catch(err => console.log(err))
-
-     
-    //  o como se imprime
 
     // reseteamos el form
     formCrearTarea.reset()
@@ -275,4 +287,6 @@ window.addEventListener('load', function () {
   
   };
 
+
 });
+

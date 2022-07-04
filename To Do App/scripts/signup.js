@@ -1,4 +1,6 @@
 window.addEventListener('load', function () {
+    AOS.init();
+
     /* ---------------------- obtenemos variables globales ---------------------- */
     const form = document.querySelector('form')
     const nombre = document.querySelector('#inputNombre');
@@ -7,9 +9,8 @@ window.addEventListener('load', function () {
     const password = document.querySelector('#inputPassword');
     const passwordRepetida = signUpForm["inputPasswordRepetida"];
     const url = 'https://ctd-todo-api.herokuapp.com/v1';
+    let errContainer = document.querySelector('.errContainer');
     let errList = document.querySelector('.errList');
-
-
 
     /* -------------------------------------------------------------------------- */
     /*            FUNCIÓN 1: Escuchamos el submit y preparamos el envío           */
@@ -37,11 +38,15 @@ window.addEventListener('load', function () {
         };
 
         // enviamos los datos
-        if(validarForm){
+        if(validarForm()){
             realizarRegister(settings);
         } else{
-            errList.hidden = false;
-            alert("No se pudo validar el form");
+            errContainer.hidden = false;
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'No se pudo validar el form. Intente de nuevo'
+            })  
         }
 
         // Reiniciamos el formulario
@@ -60,7 +65,11 @@ window.addEventListener('load', function () {
             console.log(response);
 
             if(response.ok !== true){
-                alert('Alguno de los datos es incorrecto. Vuelva a intentarlo')
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Alguno de los datos es incorrecto! Intente de nuevo'
+                })           
             }
 
             return response.json()
@@ -72,9 +81,16 @@ window.addEventListener('load', function () {
             if(data.jwt){
                 // guardo en LocalStorage 
                 localStorage.setItem('jwt', JSON.stringify(data.jwt))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Good job!',
+                    text: 'Bienvenido a To Do App!'
+                })   
 
                 // redireccionamos al login
-                location.replace('./index.html')
+                window.setTimeout(() => {
+                    location.replace('./index.html')
+                }, 1000)
             }
             
         })
@@ -110,6 +126,7 @@ window.addEventListener('load', function () {
         if(count > 0){
             return false;
         }
+        return true;
     }
-    return true;
+    
 });

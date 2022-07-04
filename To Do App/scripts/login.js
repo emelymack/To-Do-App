@@ -1,3 +1,7 @@
+if(localStorage.jwt){
+    location.replace('./mis-tareas.html')
+}
+
 window.addEventListener('load', function () {
     /* ---------------------- obtenemos variables globales ---------------------- */
     const form = document.querySelector('form')
@@ -8,6 +12,7 @@ window.addEventListener('load', function () {
     /* -------------------------------------------------------------------------- */
     /*            FUNCIÓN 1: Escuchamos el submit y preparamos el envío           */
     /* -------------------------------------------------------------------------- */
+    
     form.addEventListener('submit', function (event) {
        event.preventDefault()
 
@@ -45,7 +50,12 @@ window.addEventListener('load', function () {
             console.log(response);
 
             if(response.ok !== true){
-                alert('Alguno de los datos es incorrecto. Vuelva a intentarlo')
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Alguno de los datos es incorrecto! Intente de nuevo'
+                  })            
+                //alert('Alguno de los datos es incorrecto. Vuelva a intentarlo')
             }
 
             return response.json() 
